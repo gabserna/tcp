@@ -1,31 +1,31 @@
 const net = require('net');
 const fs = require('fs');
 
-const PORT = 3000;
+const PORT = 5000;
 let clients = [];
 
 const server = net.createServer((socket) => {
   const clientId = clients.length + 1;
-  socket.write(`Welcome to the chat server, Client${clientId}!\n`);
+  socket.write(`Welcome to the chat server, User${clientId}!\n`);
 
-  // Add the new client to the list of connected clients
+  //add the new user to list of connected users
   clients.push(socket);
 
-  // Send a notification to all other clients that a new user has connected
+  //notification to all users that a new user entered
   clients.forEach((client) => {
     if (client !== socket) {
-      client.write(`Client${clientId} has joined the chat.\n`);
+      client.write(`User${clientId} has joined the chat.\n`);
     }
   });
 
-  // Log the connection message to a server.log file
-  const message = `Client${clientId} has connected.\n`;
+  //log connection message to a server.log file
+  const message = `User${clientId} has connected.\n`;
   console.log(message);
   fs.appendFileSync('server.log', message);
 
-  // When the client sends a message, rebroadcast it to all clients
+  //when user sends a message, re-write to all users
   socket.on('data', (data) => {
-    const message = `Client${clientId}: ${data.toString()}`;
+    const message = `User${clientId}: ${data.toString()}`;
     console.log(message);
     fs.appendFileSync('server.log', message);
 
@@ -36,21 +36,21 @@ const server = net.createServer((socket) => {
     });
   });
 
-  // When the client disconnects, remove them from the list of connected clients
+  //when user disconnected, remove them from the list of connected clients
   socket.on('end', () => {
-    const message = `Client${clientId} has disconnected.\n`;
+    const message = `User${clientId} just disconnected.\n`;
     console.log(message);
     fs.appendFileSync('server.log', message);
 
     clients = clients.filter((client) => client !== socket);
 
-    // Send a notification to all other clients that the user has disconnected
+    //send notification to other users that the user has disconnected
     clients.forEach((client) => {
-      client.write(`Client${clientId} has left the chat.\n`);
+      client.write(`User${clientId} has left the chat.\n`);
     });
   });
 });
 
 server.listen(PORT, () => {
-  console.log(`Server listening on port ${PORT}`);
+  console.log(`Listening on port ${PORT}`);
 });

@@ -1,22 +1,12 @@
 const net = require('net');
-const readline = require('readline');
 
-const PORT = 3000;
-const HOST = '127.0.0.1';
-
-const socket = net.connect(PORT, HOST, () => {
+const client = net.createConnection(5000, () => {
   console.log('Connected to the chat server.');
 
-  const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout,
-  });
-
-  rl.on('line', (input) => {
-    socket.write(input);
-  });
+  // Pipe the input stream to the client socket
+  process.stdin.pipe(client);
 });
 
-socket.on('data', (data) => {
+client.on('data', (data) => {
   console.log(data.toString());
 });

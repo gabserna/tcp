@@ -1,6 +1,6 @@
 const net = require('net');
 
-const client = net.createConnection(5000, () => {
+const client = net.createConnection(5050, () => {
   console.log('Connected to the chat server.');
 
   // Pipe the input stream to the client socket

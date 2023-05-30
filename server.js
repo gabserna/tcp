@@ -1,7 +1,7 @@
 const net = require('net');
 const fs = require('fs');
 
-const PORT = 5000;
+const PORT = 5050;
 let clients = [];
 
 const server = net.createServer((socket) => {

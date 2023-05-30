@@ -18,16 +18,16 @@ const server = net.createServer((socket) => {
     }
   });
 
-  //log connection message to a server.log file
+  //log connection message to a chat.log file
   const message = `User${clientId} has connected.\n`;
   console.log(message);
-  fs.appendFileSync('server.log', message);
+  fs.appendFileSync('chat.log', message);
 
   //when user sends a message, re-write to all users
   socket.on('data', (data) => {
     const message = `User${clientId}: ${data.toString()}`;
     console.log(message);
-    fs.appendFileSync('server.log', message);
+    fs.appendFileSync('chat.log', message);
 
     clients.forEach((client) => {
       if (client !== socket) {
@@ -40,7 +40,7 @@ const server = net.createServer((socket) => {
   socket.on('end', () => {
     const message = `User${clientId} just disconnected.\n`;
     console.log(message);
-    fs.appendFileSync('server.log', message);
+    fs.appendFileSync('chat.log', message);
 
     clients = clients.filter((client) => client !== socket);
 

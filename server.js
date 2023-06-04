@@ -25,8 +25,11 @@ const server = net.createServer((socket) => {
 
   //when user sends a message, re-write to all users
   socket.on('data', (data) => {
-    const message = `User${clientId}: ${data.toString()}`;
+    let payload = data.toString()
+    let newPayload = payload.split(' ')
+    const message = `User${clientId}: ${payload}`;
     console.log(message);
+
     fs.appendFileSync('chat.log', message);
 
     clients.forEach((client) => {
